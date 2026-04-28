@@ -1,6 +1,5 @@
 import yfinance as yf
 import pandas as pd
-import pandas_ta as ta
 import requests
 import os
 
@@ -10,38 +9,39 @@ CHAT_ID = os.getenv('CHAT_ID')
 def send_telegram_msg(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     payload = {'chat_id': CHAT_ID, 'text': message, 'parse_mode': 'Markdown'}
-    try:
-        requests.post(url, data=payload)
-    except Exception as e:
-        print(f"Telegram yuborishda xato: {e}")
+    try: requests.post(url, data=payload)
+    except: print("Telegram xatosi")
+
+def calculate_rsi(series, period=14):
+    delta = series.diff()
+    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
+    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
+    rs = gain / loss
+    return 100 - (100 / (1 + rs))
 
 def screen_swing_setups(tickers):
     for ticker in tickers:
         try:
-            data = yf.download(ticker, period="2y", interval="1d", progress=False)
-            if data.empty or len(data) < 200: continue
-            if isinstance(data.columns, pd.MultiIndex):
-                data.columns = data.columns.get_level_values(0)
-
-            data['RSI'] = ta.rsi(data['Close'], length=14)
-            data['SMA_200'] = ta.sma(data['Close'], length=200)
-            data['EMA_20'] = ta.ema(data['Close'], length=20)
-            data['EMA_50'] = ta.ema(data['Close'], length=50)
-            data['Avg_Vol'] = data['Volume'].rolling(window=20).mean()
-
-            last_row = data.iloc[-1]
-            current_price = float(last_row['Close'])
-            rsi_val = round(float(last_row['RSI']), 2)
-            vol_ratio = round(last_row['Volume'] / last_row['Avg_Vol'], 2)
-
-            if (current_price > last_row['SMA_200'] and rsi_val < 45 and 
-                last_row['EMA_20'] > last_row['EMA_50'] and vol_ratio > 1.1):
-                msg = (f"🚀 *Yangi Swing Signal!*\n\nTicker: #{ticker}\nNarx: {round(current_price, 2)}$\nRSI: {rsi_val}\nHajm koeff: {vol_ratio}")
+            data = yf.download(ticker, period="1y", interval="1d", progress=False)
+            if len(data) < 200: continue
+            
+            # Narxni olish
+            close = data['Close'].iloc[:, 0] if isinstance(data['Close'], pd.DataFrame) else data['Close']
+            
+            # Indikatorlarni qo'lda hisoblash
+            rsi = calculate_rsi(close).iloc[-1]
+            sma200 = close.rolling(window=200).mean().iloc[-1]
+            current_price = close.iloc[-1]
+            
+            # Oddiy Swing sharti: Trend tepada va RSI past (Pullback)
+            if current_price > sma200 and rsi < 40:
+                msg = f"🚀 *Swing Signal!*\n\nTicker: #{ticker}\nNarx: {round(current_price, 2)}$\nRSI: {round(rsi, 2)}\nTrend: SMA200 ustida ✅"
                 send_telegram_msg(msg)
+                print(f"Signal: {ticker}")
         except Exception as e:
-            print(f"{ticker} xato: {e}")
+            print(f"Xato {ticker}: {e}")
 
-symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'AMD', 'NFLX', 'DE', 'PLTR', 'UBER', 'CAT', 'GS', 'BA'] # Qisqaroq ro'yxat test uchun
+symbols = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'AMD', 'NFLX', 'PLTR']
 
 if __name__ == "__main__":
     screen_swing_setups(symbols)
