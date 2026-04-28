@@ -1,0 +1,28 @@
+name: Stock Swing Scanner
+
+on:
+  schedule:
+    - cron: '0 16 * * 1-5'  # Dushanba-Juma, O'zb vaqti bilan 21:00
+  workflow_dispatch:        # Qo'lda ishga tushirish tugmasi
+
+jobs:
+  run-scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Scanner
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python scanner.py
