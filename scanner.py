@@ -48,7 +48,7 @@ def screen_stocks(tickers):
             
             # STRATEGIYA: Trend yuqorida (Price > SMA200) va Pullback (RSI < 45)
             # Test uchun RSI < 70 qilib turamiz, signal chiqsa keyin 45 ga tushirasiz
-            if current_price > sma200 and rsi < 70:
+            if current_price > sma200 and rsi < 45:
                 signals.append(f"🚀 {ticker}: Narx {round(current_price, 2)}$, RSI: {round(rsi, 2)}")
         except Exception as e:
             print(f"{ticker} da xato: {e}")
@@ -61,7 +61,7 @@ def screen_stocks(tickers):
         print("Hozircha mos keladigan aksiya topilmadi.")
 
 # O'zingizga kerakli tikerlarni shu yerga qo'shing
-symbols = ['NVDA', 'AMD', 'AAPL', 'MSFT', 'TSLA', 'GOOGL', 'AMZN', 'META', 'NFLX', 'PLTR']
+symbols = ['NVDA', 'AMD', 'AAPL', 'AVGO', 'TSLA', 'MU', 'TSM', 'ASML', 'CRWD', 'PG']
 
 if __name__ == "__main__":
     screen_stocks(symbols)
