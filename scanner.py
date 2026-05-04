@@ -1,47 +1,49 @@
 import yfinance as yf
 import pandas as pd
-import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import os
 
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-CHAT_ID = os.getenv('CHAT_ID')
+EMAIL_USER = os.getenv('EMAIL_USER')
+EMAIL_PASS = os.getenv('EMAIL_PASS')
+RECEIVER_EMAIL = os.getenv('RECEIVER_EMAIL')
 
-def send_telegram_msg(message):
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    payload = {'chat_id': CHAT_ID, 'text': message, 'parse_mode': 'Markdown'}
-    try: requests.post(url, data=payload)
-    except: print("Telegram xatosi")
+def send_email_msg(subject, message):
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL_USER
+    msg['To'] = RECEIVER_EMAIL
+    msg['Subject'] = subject
+    msg.attach(MIMEText(message, 'plain'))
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.send_message(msg)
+        server.quit()
+        print("Email yuborildi!")
+    except Exception as e:
+        print(f"Xato: {e}")
 
-def calculate_rsi(series, period=14):
-    delta = series.diff()
-    gain = (delta.where(delta > 0, 0)).rolling(window=period).mean()
-    loss = (-delta.where(delta < 0, 0)).rolling(window=period).mean()
-    rs = gain / loss
-    return 100 - (100 / (1 + rs))
-
-def screen_swing_setups(tickers):
+def screen_stocks(tickers):
+    signals = []
     for ticker in tickers:
         try:
             data = yf.download(ticker, period="1y", interval="1d", progress=False)
             if len(data) < 200: continue
-            
-            # Narxni olish
-            close = data['Close'].iloc[:, 0] if isinstance(data['Close'], pd.DataFrame) else data['Close']
-            
-            # Indikatorlarni qo'lda hisoblash
-            rsi = calculate_rsi(close).iloc[-1]
+            close = data['Close']
+            # RSI va SMA hisoblash
             sma200 = close.rolling(window=200).mean().iloc[-1]
             current_price = close.iloc[-1]
             
-            # Oddiy Swing sharti: Trend tepada va RSI past (Pullback)
-            if True:
-                msg = f"🚀 *Swing Signal!*\n\nTicker: #{ticker}\nNarx: {round(current_price, 2)}$\nRSI: {round(rsi, 2)}\nTrend: SMA200 ustida ✅"
-                send_telegram_msg(msg)
-                print(f"Signal: {ticker}")
-        except Exception as e:
-            print(f"Xato {ticker}: {e}")
+            # Test uchun RSI o'rniga oddiy narx trendini tekshiramiz (Xabar borishi uchun)
+            if current_price > 0: 
+                signals.append(f"{ticker}: {round(current_price, 2)}$")
+        except: continue
+    
+    if signals:
+        send_email_msg("📈 Stock Scanner Test", "\n".join(signals))
 
-symbols = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'AMD', 'NFLX', 'PLTR']
-
+symbols = ['AAPL', 'NVDA', 'TSLA', 'AMD', 'MSFT']
 if __name__ == "__main__":
-    screen_swing_setups(symbols)
+    screen_stocks(symbols)
