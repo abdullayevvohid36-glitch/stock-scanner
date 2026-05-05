@@ -240,7 +240,7 @@ def screen_stocks(tickers: list[str]) -> list[dict]:
                 continue
 
             # Minimum sifat chegarasi
-            if sc < 5:
+            if sc < 4:
                 continue
 
             stop = round(price - 1.5 * atr, 2)
@@ -268,7 +268,7 @@ def screen_stocks(tickers: list[str]) -> list[dict]:
 # ── Main ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print(f"🔍 {len(TICKERS)} ticker tekshirilmoqda...")
-    print(f"📋 Filtrlar: RSI ≤ 70 | Narx > EMA50 | Score ≥ 5/7\n")
+    print(f"📋 Filtrlar: RSI ≤ 70 | Narx > EMA50 | Score ≥ 4/7\n")
 
     signals = screen_stocks(TICKERS)
 
