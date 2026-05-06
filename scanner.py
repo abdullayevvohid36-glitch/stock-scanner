@@ -33,7 +33,8 @@ def send_email(subject: str, html_body: str):
 # ── Shariah-screened tickers ───────────────────────────────────────────────────
 TICKERS = [
     # Semiconductors
-    "NVDA", "AVGO", "QCOM", "AMAT", "LRCX", "KLAC", "MRVL", "TXN", "ASML", "TSM",
+    "NVDA", "AVGO", "QCOM", "AMAT", "LRCX", "KLAC", "MRVL", "TXN", "ASML", "TSM","TSLA",
+    
     # SaaS & Cloud
     "MSFT", "CRM", "NOW", "WDAY", "DDOG", "SNOW", "MDB", "HUBS",
     # Cybersecurity
