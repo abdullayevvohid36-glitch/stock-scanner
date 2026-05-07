@@ -13,22 +13,15 @@ RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL", "")
 
 # ── Shariah-screened tickers ───────────────────────────────────────────────────
 TICKERS = [
-    # Semiconductors
     "NVDA", "AVGO", "QCOM", "AMAT", "LRCX", "KLAC", "MRVL", "TXN", "ASML", "TSM",
-    # SaaS & Cloud
-    "MSFT", "CRM", "NOW", "WDAY", "DDOG", "SNOW", "MDB", "HUBS",
-    # Cybersecurity
-    "CRWD", "PANW", "FTNT", "ZS", "S", "CYBR",
-    # Consumer & Retail
-    "AAPL", "AMZN", "COST", "TGT", "HD", "LOW",
-    # Healthcare
-    "ISRG", "ELV", "UNH", "VEEV", "DXCM",
-    # Energy (Halal)
-    "XOM", "CVX", "NEE", "ENPH", "FSLR",
-    # Industrials
-    "HON", "ROK", "CARR", "GNRC", "AXON",
+    "GLDM", "CRM", "NOW", "SRPT", "HLAL", "SNOW", "MDB", "HUBS", "WDC", "STX", "BURL",
+    "CRWD", "PANW", "FTNT", "ZS", "S", "CYBR", "AAPL" "TSLA", "AMD", "NTRA", "SAP",
+    "ARM", "SPRE", "IGDA", "VRSN", "HD", "LOW", "POWL", "BBY", "TMDX", "JCI", "SNPS",
+    "ISRG", "ELV", "UNH", "GILD", "DXCM", "SHOP", "XLB", "ADSK", "ADI", "CDNS", "CSCO"
+    "XOM", "CVX", "TJX", "ENPH", "FSLR", "ADBE", "TEAM", "ANET", "DOCU", "LLY", "JNJ",
+    "UNP", "ROK", "CARR", "GNRC", "HIMS", "TMO", "PG", "ABT", "SYK", "MDT", "DHR", "EGN",
+"VRTX", "HD", "LOW", "NKE", "SBUX", "EL", "ELF", "CL", "KMB", "SLB", "EOG", "VLO", "HAL",
 ]
-
 # ══════════════════════════════════════════════════════════════════════════════
 # INDIKATORLAR
 # ══════════════════════════════════════════════════════════════════════════════
