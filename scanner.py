@@ -15,12 +15,15 @@ RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL", "")
 TICKERS = [
     "NVDA", "AVGO", "QCOM", "AMAT", "LRCX", "KLAC", "MRVL", "TXN", "ASML", "TSM",
     "GLDM", "CRM", "NOW", "SRPT", "HLAL", "SNOW", "MDB", "HUBS", "WDC", "STX", "BURL",
-    "CRWD", "PANW", "FTNT", "ZS", "S", "CYBR", "AAPL" "TSLA", "AMD", "NTRA", "SAP",
+    "CRWD", "PANW", "FTNT", "ZS", "S", "CYBR", "AAPL", "TSLA", "AMD", "NTRA", "SAP",
     "ARM", "SPRE", "IGDA", "VRSN", "HD", "LOW", "POWL", "BBY", "TMDX", "JCI", "SNPS",
-    "ISRG", "ELV", "UNH", "GILD", "DXCM", "SHOP", "XLB", "ADSK", "ADI", "CDNS", "CSCO"
+    "ISRG", "ELV", "UNH", "GILD", "DXCM", "SHOP", "XLB", "ADSK", "ADI", "CDNS", "CSCO",
     "XOM", "CVX", "TJX", "ENPH", "FSLR", "ADBE", "TEAM", "ANET", "DOCU", "LLY", "JNJ",
     "UNP", "ROK", "CARR", "GNRC", "HIMS", "TMO", "PG", "ABT", "SYK", "MDT", "DHR", "EGN",
-"VRTX", "HD", "LOW", "NKE", "SBUX", "EL", "ELF", "CL", "KMB", "SLB", "EOG", "VLO", "HAL",
+    "VRTX", "LIN", "NKE", "SBUX", "EL", "ELF", "CL", "KMB", "SLB", "EOG", "VLO", "HAL",    
+    "APD", "DD", "ECL", "ALB", "GE", "ETN", "EMR", "PH", "ITW", "V", "MA", "SPGI","MSCI",
+    "SAP", "ULTA", "AZN", "RIO", "BHP", "UBER", "TTD", "HSY", "MCK", "UPS", "ORLY", "AZO",
+    "IDXX", "ZTS", "CARR", "TT", "OTIS", "ROST", "PKG", "FAST", "ODFL",
 ]
 # ══════════════════════════════════════════════════════════════════════════════
 # INDIKATORLAR
