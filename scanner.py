@@ -377,7 +377,7 @@ def screen_stocks(tickers: list[str]) -> list[dict]:
 
     for ticker in tickers:
         try:
-            df = yf.download(ticker, period="1y", interval="4H", progress=False)
+            df = yf.download(ticker, period="1y", interval="1d", progress=False)
             if len(df) < 200:
                 continue
 
